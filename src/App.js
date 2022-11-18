@@ -1,23 +1,53 @@
 import logo from './logo.svg';
+import GithubImage from './github-mark.png'
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className='container text-center'>
+
+      <h1 className='py-5 text-uppercase'>Github Profile</h1>
+
+      <form>
+        <div className='form-group'>
+
+          <div className='input-group'>
+            <input 
+             type="text" 
+             className='form-control' 
+             required
+            />
+
+            <span className='input-group-btn'>
+              <button type='submit' className='btn btn-success'>
+                Search
+              </button>
+            </span>
+          </div>
+
+        </div>
+      </form>
+
+      <div className='py-5'>
+        <img 
+         src={GithubImage} 
+         className='responsive rounded-circle' 
+         height="200px"
+         alt="" 
+        />
+
+        <h2>
+          <a className='text-decoration-none' href='https://github.com/mateusaraujos' target='_new'>
+            Mateus Araújo
+          </a>
+        </h2>
+
+        <h3>Alagoas, Brazil</h3>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <a className='text-decoration-none text-info' href='https://www.linkedin.com/in/mateusaraujos/' target='_new'>https://MeuLinkedIn.dev</a>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      </div>
+
     </div>
   );
 }
