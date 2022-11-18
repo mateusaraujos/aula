@@ -1,14 +1,34 @@
-import logo from './logo.svg';
 import GithubImage from './github-mark.png'
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+
+  // Estado interno. [valorDoEstado, setValorNoEstado]
+  const [search, setSearch] = useState(''); // Controlar o estdo do input.
+  const [userData, setUserData] = useState(); // Controlar o estado dos dados.
+
+  // Manipular o formulário quando apertar no botão Search.
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Eliminando o refresh da página ao dar submit.
+
+    // Buscar, como se fosse um client HTTP nativo do JavaScript.
+    fetch(`https://api.github.com/users/${search}`)
+      .then(response => response.json()) // Pega a resposta da api e transforma em JSON.
+      .then(userResponse => setUserData(userResponse));
+  }
+
+  // Para o input não ficar readOnly, por causa do value.
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  }
+
   return (
     <div className='container text-center'>
 
       <h1 className='py-5 text-uppercase'>Github Profile</h1>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className='form-group'>
 
           <div className='input-group'>
@@ -16,6 +36,8 @@ function App() {
              type="text" 
              className='form-control' 
              required
+             value={search}
+             onChange={handleChange}
             />
 
             <span className='input-group-btn'>
@@ -29,23 +51,38 @@ function App() {
       </form>
 
       <div className='py-5'>
-        <img 
-         src={GithubImage} 
-         className='responsive rounded-circle' 
-         height="200px"
-         alt="" 
-        />
+        {!userData && (
+          <img 
+            src={GithubImage} 
+            className='responsive rounded-circle' 
+            height="200px"
+            alt="" 
+          />
+        )}
 
-        <h2>
-          <a className='text-decoration-none' href='https://github.com/mateusaraujos' target='_new'>
-            Mateus Araújo
-          </a>
-        </h2>
+        {userData && (
+          <div>
+            <img 
+              src={userData.avatar_url} 
+              className='responsive rounded-circle' 
+              height="200px"
+              alt="" 
+            />
 
-        <h3>Alagoas, Brazil</h3>
-        <p>
-          <a className='text-decoration-none text-info' href='https://www.linkedin.com/in/mateusaraujos/' target='_new'>https://MeuLinkedIn.dev</a>
-        </p>
+            <h2 className='pt-4'>
+              <a className='text-decoration-none' href={userData.html_url} target='_new'>
+                {userData.name}
+              </a>
+            </h2>
+
+            <h3>{userData.location}</h3>
+            <p className='container-fluid'>
+              <a className='text-decoration-none text-info' href={userData.blog} target='_new'>
+                {userData.blog}
+              </a>
+            </p>
+          </div>
+        )}
       </div>
 
     </div>
